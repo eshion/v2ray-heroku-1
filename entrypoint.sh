@@ -106,6 +106,11 @@ cat <<-EOF > /v2raybin/config.json
             }
         }
     }],
+    "outbound":{
+        "protocol":"freedom",
+        "settings":{
+        }
+    },
     "routing": {
       "rules": [
         {
