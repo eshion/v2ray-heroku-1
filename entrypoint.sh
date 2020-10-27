@@ -63,7 +63,30 @@ cat <<-EOF > /v2raybin/config.json
     "log":{
         "loglevel":"warning"
     },
-    "inbound":{
+    "reverse":{
+      "portals":[  
+        {  
+          "tag":"portal",
+          "domain":"private.cloud.com"
+        }
+      ]
+    },
+    "inbound": [
+      {
+        "protocol": "dokodemo-door",
+        "port": 3333,
+        "settings": {
+          "address":"",
+          "network": "tcp,udp",
+          "followRedirect": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls"]
+        },
+        "tag":"external"
+      },{
+        "tag": "tunnel",
         "protocol":"vmess",
         "listen":"127.0.0.1",
         "port":2333,
@@ -82,11 +105,19 @@ cat <<-EOF > /v2raybin/config.json
                 "path":"${V2_Path}"
             }
         }
-    },
-    "outbound":{
-        "protocol":"freedom",
-        "settings":{
-        }
+    }],
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "inboundTag": ["external"],
+          "outboundTag": "portal"
+        },{
+            "type": "field",
+            "inboundTag": ["tunnel"],
+            "domain": ["full:private.cloud.com"],
+            "outboundTag": "portal"
+        }]
     }
 }
 EOF
@@ -104,6 +135,10 @@ http://0.0.0.0:${PORT}
 		websocket
 		header_upstream -Origin
 	}
+  proxy / localhost:3333 {
+    websocket
+    header_upstream -Origin
+  }
 }
 EOF
 
