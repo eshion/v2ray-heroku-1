@@ -71,7 +71,7 @@ cat <<-EOF > /v2raybin/config.json
         }
       ]
     },
-    "inbound": [
+    "inbounds": [
       {
         "protocol": "dokodemo-door",
         "port": 3333,
@@ -135,6 +135,10 @@ http://0.0.0.0:${PORT}
 		websocket
 		header_upstream -Origin
 	}
+  proxy / localhost:3333 {
+    websocket
+    header_upstream -Origin
+  }
 }
 EOF
 
