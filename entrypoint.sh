@@ -131,6 +131,7 @@ EOF
 echo /v2raybin/config.json
 cat /v2raybin/config.json
 
+
 cat <<-EOF > /caddybin/Caddyfile
 :${PORT}
 {
@@ -152,6 +153,9 @@ cat <<-EOF > /caddybin/Caddyfile
   reverse_proxy @door localhost:3333
 }
 EOF
+
+echo /caddybin/Caddyfile
+cat /caddybin/Caddyfile
 
 cat <<-EOF > /v2raybin/vmess.json
 {
