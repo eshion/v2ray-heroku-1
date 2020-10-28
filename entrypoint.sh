@@ -45,10 +45,10 @@ unzip v2ray.zip
 rm -rf v2ray.zip
 
 #C_VER="v1.0.3"
-C_VER="v2.2.1"
+C_VER="2.2.1"
 mkdir /caddybin
 cd /caddybin
-CADDY_URL="https://github.com/caddyserver/caddy/releases/download/$C_VER/caddy_${C_VER}_linux_amd64.tar.gz"
+CADDY_URL="https://github.com/caddyserver/caddy/releases/download/v$C_VER/caddy_${C_VER}_linux_amd64.tar.gz"
 echo ${CADDY_URL}
 wget --no-check-certificate -qO 'caddy.tar.gz' ${CADDY_URL}
 tar xvf caddy.tar.gz
