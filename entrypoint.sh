@@ -136,21 +136,19 @@ http://0.0.0.0:${PORT}
   root /wwwroot
   index index.html
   timeouts none
+
   proxy ${V2_Path} localhost:2333 {
     websocket
     header_upstream -Origin
   }
-  proxy / localhost:3333 {
+
+  @door {
+    not { host *.herokuapp.com }
+  }
+  proxy @door localhost:3333 {
     websocket
     header_upstream -Origin
   }
-}
-
-http://*.herokuapp.com:${PORT}
-{
-  root /wwwroot
-  index index.html
-  timeouts none
 }
 EOF
 
