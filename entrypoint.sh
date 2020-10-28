@@ -106,13 +106,25 @@ cat <<-EOF > /v2raybin/config.json
             }
         }
     }],
-    "outbound":{
+    "outbounds":[{
         "protocol":"freedom",
         "settings":{
         }
-    },
+    },{
+        "tag": "www",
+        "protocol":"freedom",
+        "settings":{
+          "redirect": "127.0.0.1:3335"
+        }
+    }],
     "routing": {
-      "rules": [
+      "rules": [        
+        {
+          "type": "field",
+          "inboundTag": ["external"],
+          "domain": ["herokuapp.com"],
+          "outboundTag": "www"
+        },
         {
           "type": "field",
           "inboundTag": ["external"],
@@ -133,17 +145,24 @@ cat /v2raybin/config.json
 cat <<-EOF > /caddybin/Caddyfile
 http://0.0.0.0:${PORT}
 {
-	root /wwwroot
-	index index.html
-	timeouts none
-	proxy ${V2_Path} localhost:2333 {
-		websocket
-		header_upstream -Origin
-	}
+  root /wwwroot
+  index index.html
+  timeouts none
+  proxy ${V2_Path} localhost:2333 {
+    websocket
+    header_upstream -Origin
+  }
   proxy / localhost:3333 {
     websocket
     header_upstream -Origin
   }
+}
+
+http://0.0.0.0:3335
+{
+  root /wwwroot
+  index index.html
+  timeouts none
 }
 EOF
 
@@ -177,3 +196,4 @@ cd /v2raybin
 ./v2ray -config config.json &
 cd /caddybin
 ./caddy -conf="Caddyfile"
+
