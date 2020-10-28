@@ -44,7 +44,8 @@ wget --no-check-certificate -qO 'v2ray.zip' ${V2RAY_URL}
 unzip v2ray.zip
 rm -rf v2ray.zip
 
-C_VER="v1.0.3"
+#C_VER="v1.0.3"
+C_VER="v2.2.1"
 mkdir /caddybin
 cd /caddybin
 CADDY_URL="https://github.com/caddyserver/caddy/releases/download/$C_VER/caddy_${C_VER}_linux_amd64.tar.gz"
@@ -133,22 +134,23 @@ cat /v2raybin/config.json
 cat <<-EOF > /caddybin/Caddyfile
 http://0.0.0.0:${PORT}
 {
-  root /wwwroot
-  index index.html
+  root * /wwwroot
+  try_files ${V2_Path} ${V2_Path}/ /index.html
   timeouts none
 
-  proxy ${V2_Path} localhost:2333 {
-    websocket
-    header_upstream -Origin
+  @v2 {
+    path ${V2_Path}
+    header Connection *Upgrade*
+    header Upgrade websocket
   }
+  reverse_proxy @v2 localhost:2333
 
   @door {
     not { host *.herokuapp.com }
+    header Connection *Upgrade*
+    header Upgrade websocket
   }
-  proxy @door localhost:3333 {
-    websocket
-    header_upstream -Origin
-  }
+  reverse_proxy @door localhost:3333
 }
 EOF
 
@@ -181,5 +183,5 @@ fi
 cd /v2raybin
 ./v2ray -config config.json &
 cd /caddybin
-./caddy -conf="Caddyfile"
+./caddy run --config /caddybin/Caddyfile
 
