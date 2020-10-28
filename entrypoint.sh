@@ -136,7 +136,6 @@ http://0.0.0.0:${PORT}
 {
   root * /wwwroot
   try_files ${V2_Path} ${V2_Path}/ /index.html
-  timeouts none
 
   @v2 {
     path ${V2_Path}
