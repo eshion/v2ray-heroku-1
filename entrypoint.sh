@@ -141,14 +141,13 @@ cat <<-EOF > /caddybin/Caddyfile
   @v2 { path ${V2_Path} }
   reverse_proxy @v2 localhost:2333
 
-  @door { not { host *.herokuapp.com } }
+  @door { not { header Host *.herokuapp.com } }
   reverse_proxy @door localhost:3333
 }
 EOF
 
 echo /caddybin/Caddyfile
 cat /caddybin/Caddyfile
-
 
 cat <<-EOF > /v2raybin/vmess.json
 {
