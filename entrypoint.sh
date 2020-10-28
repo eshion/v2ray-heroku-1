@@ -138,21 +138,11 @@ cat <<-EOF > /caddybin/Caddyfile
   root * /wwwroot
   file_server
 
-  @v2 {
-    path ${V2_Path}
-  }
-  reverse_proxy @v2 localhost:2333 {
-    header Connection *Upgrade*
-    header Upgrade websocket    
-  }
+  @v2 { path ${V2_Path} }
+  reverse_proxy @v2 localhost:2333
 
-  @door {
-    not { host *.herokuapp.com }
-  }
-  reverse_proxy @door localhost:3333 {
-    header Connection *Upgrade*
-    header Upgrade websocket    
-  }
+  @door { not { host *.herokuapp.com } }
+  reverse_proxy @door localhost:3333
 }
 EOF
 
