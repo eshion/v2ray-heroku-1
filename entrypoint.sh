@@ -135,7 +135,7 @@ cat <<-EOF > /caddybin/Caddyfile
 http://0.0.0.0:${PORT}
 {
   root * /wwwroot
-  try_files ${V2_Path} ${V2_Path}/ /index.html
+  try_files {path} index.html
 
   @v2 {
     path ${V2_Path}
