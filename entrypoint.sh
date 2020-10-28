@@ -132,7 +132,7 @@ echo /v2raybin/config.json
 cat /v2raybin/config.json
 
 cat <<-EOF > /caddybin/Caddyfile
-http://0.0.0.0:${PORT}
+:${PORT}
 {
   root * /wwwroot
   file_server
