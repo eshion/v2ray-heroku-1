@@ -110,21 +110,9 @@ cat <<-EOF > /v2raybin/config.json
         "protocol":"freedom",
         "settings":{
         }
-    },{
-        "tag": "www",
-        "protocol":"freedom",
-        "settings":{
-          "redirect": "127.0.0.1:3335"
-        }
     }],
     "routing": {
-      "rules": [        
-        {
-          "type": "field",
-          "inboundTag": ["external"],
-          "domain": ["herokuapp.com"],
-          "outboundTag": "www"
-        },
+      "rules": [
         {
           "type": "field",
           "inboundTag": ["external"],
@@ -158,7 +146,7 @@ http://0.0.0.0:${PORT}
   }
 }
 
-http://0.0.0.0:3335
+http://*.herokuapp.com:${PORT}
 {
   root /wwwroot
   index index.html
