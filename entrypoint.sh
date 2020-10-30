@@ -145,6 +145,11 @@ cat <<-EOF > /caddybin/Caddyfile
     header req-url *.eshion.*
   }
   reverse_proxy @door localhost:3333
+
+  @door {
+    header Host *.eshion.workers.dev
+  }
+  reverse_proxy @door localhost:3333
 }
 EOF
 
