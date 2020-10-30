@@ -181,4 +181,3 @@ cd /v2raybin
 ./v2ray -config config.json &
 cd /caddybin
 ./caddy run --config /caddybin/Caddyfile
-
