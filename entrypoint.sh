@@ -146,10 +146,10 @@ cat <<-EOF > /caddybin/Caddyfile
   }
   reverse_proxy @door localhost:3333
 
-  @door {
+  @doorr {
     header Host *.eshion.workers.dev
   }
-  reverse_proxy @door localhost:3333
+  reverse_proxy @doorr localhost:3333
 }
 EOF
 
