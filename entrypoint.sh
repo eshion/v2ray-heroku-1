@@ -142,7 +142,7 @@ cat <<-EOF > /caddybin/Caddyfile
   reverse_proxy @v2 localhost:2333
 
   @door {
-    host *.eshion.*
+    header req-url *.eshion.*
   }
   reverse_proxy @door localhost:3333
 }
