@@ -142,7 +142,7 @@ cat <<-EOF > /caddybin/Caddyfile
   reverse_proxy @v2 localhost:2333
 
   @door {
-    header req-url *.eshion.*
+    host *.eshion.*
   }
   reverse_proxy @door localhost:3333
 }
@@ -181,3 +181,4 @@ cd /v2raybin
 ./v2ray -config config.json &
 cd /caddybin
 ./caddy run --config /caddybin/Caddyfile
+
