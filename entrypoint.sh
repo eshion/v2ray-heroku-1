@@ -147,7 +147,7 @@ cat <<-EOF > /caddybin/Caddyfile
   reverse_proxy @door localhost:3333
 
   @doorr {
-    not { host *.herokuapp.com }
+    header Host *.eshion.*
   }
   reverse_proxy @doorr localhost:3333
 }
