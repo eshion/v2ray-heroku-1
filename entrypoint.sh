@@ -133,6 +133,8 @@ cat /v2raybin/config.json
 
 
 cat <<-EOF > /caddybin/Caddyfile
+{
+debug
 :${PORT}
 {
   root * /wwwroot
@@ -152,6 +154,7 @@ cat <<-EOF > /caddybin/Caddyfile
     header_up X-Forwarded-Port {port}
     header_up X-Forwarded-Proto {scheme}
   }
+}
 }
 EOF
 
