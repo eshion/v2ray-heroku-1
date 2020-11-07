@@ -146,7 +146,7 @@ cat <<-EOF > /caddybin/Caddyfile
     header_regexp abc url (.*).eshion.*
   }
   reverse_proxy @door 127.0.0.1:3333 {
-    header_up Host {http.regexp.abc.1}
+    header_up Host {http.regexp.abc.0}
     header_up X-Real-IP {remote}
     header_up X-Forwarded-For {remote}
     header_up X-Forwarded-Port {port}
