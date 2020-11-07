@@ -144,7 +144,13 @@ cat <<-EOF > /caddybin/Caddyfile
   @door {
     header req-url *.eshion.*
   }
-  reverse_proxy @door localhost:3333 
+  reverse_proxy @door localhost:3333 {
+    header_up Host {>req-url}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
+  }
 }
 EOF
 
