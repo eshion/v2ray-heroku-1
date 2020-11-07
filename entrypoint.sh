@@ -153,6 +153,12 @@ cat <<-EOF > /caddybin/Caddyfile
     header_up X-Forwarded-Port {port}
     header_up X-Forwarded-Proto {scheme}
   }
+  
+  @websockets {
+    header Connection *Upgrade*
+    header Upgrade websocket
+  }
+  reverse_proxy @websockets 127.0.0.1:3333
 }
 EOF
 
