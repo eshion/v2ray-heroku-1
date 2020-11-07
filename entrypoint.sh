@@ -139,12 +139,12 @@ cat <<-EOF > /caddybin/Caddyfile
   file_server
 
   @v2 { path ${V2_Path} }
-  reverse_proxy @v2 localhost:2333
+  reverse_proxy @v2 127.0.0.1:2333
 
   @door {
     header req-url *.eshion.*
   }
-  reverse_proxy @door localhost:3333 {
+  reverse_proxy @door 127.0.0.1:3333 {
     header_up Host {>req-url}
   }
 }
