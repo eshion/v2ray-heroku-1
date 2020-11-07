@@ -133,10 +133,9 @@ cat /v2raybin/config.json
 
 
 cat <<-EOF > /caddybin/Caddyfile
-{
-debug
 :${PORT}
 {
+
   root * /wwwroot
   file_server
 
@@ -147,14 +146,13 @@ debug
     header url *.eshion.*
     header_regexp abc url (.*).eshion.*
   }
-  header @door Host {http.regexp.abc.0}
+  header @door Host {>url}
   reverse_proxy @door 127.0.0.1:3333 {
     header_up X-Real-IP {remote}
     header_up X-Forwarded-For {remote}
     header_up X-Forwarded-Port {port}
     header_up X-Forwarded-Proto {scheme}
   }
-}
 }
 EOF
 
