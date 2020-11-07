@@ -81,6 +81,10 @@ cat <<-EOF > /v2raybin/config.json
           "network": "tcp,udp",
           "followRedirect": false
         },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls"]
+        },
         "tag":"external"
       },{
         "tag": "tunnel",
