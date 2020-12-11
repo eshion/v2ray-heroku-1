@@ -59,6 +59,17 @@ cd /wwwroot
 tar xvf wwwroot.tar.gz
 rm -rf wwwroot.tar.gz
 
+F_VER="0.34.3"
+mkdir /frp
+cd /frp
+FRP_URL="https://github.com/fatedier/frp/releases/download/v$F_VER/frp_${F_VER}_linux_amd64.tar.gz"
+echo ${FRP_URL}
+wget --no-check-certificate -qO 'frp.tar.gz' ${FRP_URL}
+tar xvf frp.tar.gz
+rm -rf frp.tar.gz
+chmod +x frp
+
+
 cat <<-EOF > /v2raybin/config.json
 {
     "log":{
@@ -135,13 +146,13 @@ cat /v2raybin/config.json
 cat <<-EOF > /caddybin/Caddyfile
 :${PORT}
 {
-
   root * /wwwroot
   file_server
-
-  @v2 { path ${V2_Path} }
-  reverse_proxy @v2 127.0.0.1:2333
-
+  reverse_proxy /${V2_Path} 127.0.0.1:2333
+  @frp {
+    {header.frp}.startsWith("6")
+  }
+  reverse_proxy @frp 127.0.0.1:{header.frp}
   @door {
     header url *_eshion
     header_regexp url url (.*)_eshion
@@ -152,8 +163,18 @@ cat <<-EOF > /caddybin/Caddyfile
 }
 EOF
 
-echo /caddybin/Caddyfile
-cat /caddybin/Caddyfile
+echo /frp/Caddyfile
+cat /frp/Caddyfile
+
+cat <<-EOF > /frp/frps.ini
+[common]
+bind_port = 6000
+vhost_http_port = 6080
+vhost_https_port = 6443
+EOF
+
+echo /frp/frps.ini
+cat /frp/frps.ini
 
 cat <<-EOF > /v2raybin/vmess.json
 {
@@ -181,8 +202,9 @@ else
   echo -n "${vmess}" | qrencode -s 6 -o /wwwroot/${V2_QR_Path}/v2.png
 fi
 
+cd /frp
+./frp run -c /frp/frps.ini &
 cd /v2raybin
 ./v2ray -config config.json &
 cd /caddybin
 ./caddy run --config /caddybin/Caddyfile
-
