@@ -25,6 +25,11 @@ if [[ -z "${V2_QR_Path}" ]]; then
 fi
 echo ${V2_QR_Path}
 
+if [[ -z "${BRIDEG_KEY}" ]]; then
+  BRIDEG_KEY="private.cloud.com"
+fi
+echo ${BRIDEG_KEY}
+
 rm -rf /etc/localtime
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 date -R
@@ -81,14 +86,14 @@ cat <<-EOF > /v2raybin/config.json
       "portals":[  
         {  
           "tag":"portal",
-          "domain":"private.cloud.com"
+          "domain":"${BRIDEG_KEY}"
         }
       ]
     },
     "inbounds": [
       {
         "protocol": "dokodemo-door",
-        "port": 3333,
+        "port": "6900-6999",
         "settings": {
           "address":"",
           "network": "tcp,udp",
@@ -97,6 +102,9 @@ cat <<-EOF > /v2raybin/config.json
         "sniffing": {
           "enabled": true,
           "destOverride": ["http", "tls"]
+        },
+        "allocate": {
+          "strategy": "always"
         },
         "tag":"external"
       },{
@@ -134,7 +142,7 @@ cat <<-EOF > /v2raybin/config.json
         },{
             "type": "field",
             "inboundTag": ["tunnel"],
-            "domain": ["full:private.cloud.com"],
+            "domain": ["full:${BRIDEG_KEY}"],
             "outboundTag": "portal"
         }]
     }
@@ -151,21 +159,14 @@ cat <<-EOF > /caddybin/Caddyfile
   root * /wwwroot
   file_server
 
-  reverse_proxy * 127.0.0.1:6000
-
   @v2 { path ${V2_Path} }
   reverse_proxy @v2 127.0.0.1:2333
 
   @frp {
     header frp 6*
   }
-  reverse_proxy @frp 127.0.0.1:{header.frp}
-
-  @door {
-    header url *_eshion
-  }
-  reverse_proxy @door 127.0.0.1:3333 {
-    header_up Host {header.url}
+  reverse_proxy @frp 127.0.0.1:{header.frp} {
+    header_up Host {header.frp}
   }
 }
 EOF
