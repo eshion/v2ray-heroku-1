@@ -152,7 +152,7 @@ cat <<-EOF > /caddybin/Caddyfile
   file_server
   reverse_proxy /${V2_Path} 127.0.0.1:2333
   @frp {
-    {header.frp}.startsWith("6")
+    header frp 6*
   }
   reverse_proxy @frp 127.0.0.1:{header.frp}
   @door {
