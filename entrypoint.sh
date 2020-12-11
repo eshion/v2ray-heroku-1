@@ -67,7 +67,9 @@ echo ${FRP_URL}
 wget --no-check-certificate -qO 'frp.tar.gz' ${FRP_URL}
 tar xvf frp.tar.gz
 rm -rf frp.tar.gz
-chmod +x frp
+mv ./frp_${F_VER}_linux_amd64/frps /frp/
+rm -rf frp_${F_VER}_linux_amd64
+chmod +x frps
 
 
 cat <<-EOF > /v2raybin/config.json
@@ -203,7 +205,7 @@ else
 fi
 
 cd /frp
-./frp run -c /frp/frps.ini &
+./frps run -c /frp/frps.ini &
 cd /v2raybin
 ./v2ray -config config.json &
 cd /caddybin
