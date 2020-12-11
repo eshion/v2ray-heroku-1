@@ -165,8 +165,8 @@ cat <<-EOF > /caddybin/Caddyfile
 }
 EOF
 
-echo /frp/Caddyfile
-cat /frp/Caddyfile
+echo /caddybin/Caddyfile
+cat /caddybin/Caddyfile
 
 cat <<-EOF > /frp/frps.ini
 [common]
